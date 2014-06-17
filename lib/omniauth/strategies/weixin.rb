@@ -61,10 +61,14 @@ module OmniAuth
 
       def raw_info
         @raw_info ||= begin
-          response =  access_token.get(
-            '/sns/userinfo',
-             {:params => {:openid => uid}, :parse => :json}
-          ).parsed
+          if access_token['scope'] == 'snsapi_base'
+            {}
+          else
+            response =  access_token.get(
+              '/sns/userinfo',
+               {:params => {:openid => uid}, :parse => :json}
+            ).parsed
+          end
         end
       end
     end
